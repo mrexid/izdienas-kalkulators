@@ -1,11 +1,10 @@
-
-<!DOCTYPE html>
 <!-- Ja šo lasi, man prieks! Droši vari modificēt un labot visu ko vēlies ja saproti ko dari :) -->
+<!DOCTYPE html>
 <html lang="lv">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Izdienas pensijas kalkulators (IeM / IeVP), testa versija 06082025</title>
+<title>Izdienas pensijas kalkulators (IeM / IeVP) – v6</title>
 <style>
   :root { --bg:#f7f9fb; --card:#ffffff; --accent:#0b6efd; --muted:#6c757d; --ok:#0a8754; --no:#c1121f; }
   body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); margin: 0; padding: 24px; }
@@ -36,20 +35,18 @@
   .sideby header { display:grid; grid-template-columns:1fr 1fr; }
   .sideby header div { padding:8px; font-weight:700; text-align:center; background:#eef5ff }
   .sideby .cell { padding:8px; border-top:1px solid #e5e7eb; display:grid; grid-template-columns:1fr 1fr; }
-  .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:.85rem; }
-  .pill.ok { background:#d8f3dc; color:#1b4332;}
-  .pill.no { background:#fde2e4; color:#9b2226;}
   canvas { width:100%; height:240px; border:1px solid #e5e7eb; border-radius:10px; background:#fff }
   .legend { display:flex; gap:12px; align-items:center; margin:6px 0 12px; }
-  .legend span { display:inline-flex; align-items:center; gap:6px; }
   .sw { width:16px; height:10px; display:inline-block; border-radius:3px; }
   .desc { margin-top: 10px; color: var(--muted); font-size: .95rem; line-height:1.45; }
   .desc ul { margin: 6px 0 0 18px; }
+  .schedule { margin-top:14px; }
+  .schedule caption { text-align:left; font-weight:700; margin-bottom:6px; }
 </style>
 </head>
 <body>
   <h1>Izdienas pensijas kalkulators (IeM sistēmas un IeVP amatpersonām) – testa versija 06082025</h1>
-   <h1>Šis "kalkulators" domāts tikai ieskatam un vizuāli vieglākai VK pasniegtās informācijas interpretācijai </h1>
+  <h1>Šis "kalkulators" domāts tikai ieskatam un vizuāli vieglākai VK pasniegtās informācijas interpretācijai</h1>
   <div class="grid">
     <section class="card">
       <h2>Ievade</h2>
@@ -75,7 +72,7 @@
         <div>
           <label>Gada tabulas sākuma gads</label>
           <input id="startYear" type="number" step="1">
-          <div class="hint">gada‑griezuma pārskatam (parasti tekošais gads)</div>
+          <div class="hint">gada-griezuma pārskatam (parasti tekošais gads)</div>
         </div>
       </div>
 
@@ -86,7 +83,7 @@
             <option>Plānotais</option>
             <option>Esošais</option>
           </select>
-          <div class="hint">blakus tabulā rādīsim abus, te – kurš akcentēts</div>
+          <div class="hint">blakus tabulā rādīsim abus, te – kurš akcentēts (vecuma un stāža pieaugums no 2027 attiecas uz visiem)</div>
         </div>
         <div>
           <label>Turpināšu dienestu līdz pensijai?</label>
@@ -107,7 +104,7 @@
         <div>
           <label>Tiesiskā paļāvība &lt;10 g. (uz 01.01.2027.)?</label>
           <select id="loyal"><option>Nē</option><option>Jā</option></select>
-          <div class="hint">ja Jā: bāze −10 p.p., griesti 70%, algas periods 10 gadi</div>
+          <div class="hint">ja Jā: bāze samazinās pakāpeniski (skat. zemāk), griesti 70%, algas periods 10 gadi</div>
         </div>
       </div>
 
@@ -115,10 +112,12 @@
         <div>
           <label>Vidējā alga (5 gadu periods) – €/mēn.</label>
           <input id="avg5" type="number" min="0" step="1" placeholder="piem., 1500">
+		  <div class="hint">!TIKAI un vienīgi informatīvi, pēc reāliem aprēķina lūdzu vērsties VSAA vai Finanšu nod.!</div>
         </div>
         <div>
           <label>Vidējā alga (10 gadu periods) – €/mēn.</label>
           <input id="avg10" type="number" min="0" step="1" placeholder="piem., 1400">
+		  <div class="hint">!TIKAI un vienīgi informatīvi, pēc reāliem aprēķina lūdzu vērsties VSAA vai Finanšu nod.!</div>
         </div>
       </div>
 
@@ -128,29 +127,41 @@
       </div>
 
       <div class="desc">
-	  
-	  <strong>Šis "kalkulators" domāts tikai ieskatam un vieglākai VK pasniegtās "Taisnīgās reformas" informācijas uztverei un interpretācijai. Ko tas dara?</strong>
+        <strong>Šis "kalkulators" domāts tikai ieskatam un vieglākai VK pasniegtās "reformas" informācijas uztverei un interpretācijai. Ko tas dara?</strong>
         <ul>
-		          <li>Aprēķina agrāko iespējamo pensionēšanās gadu, vecumu un izdienas stāžu izvēlētajā scenārijā (Esošais vai Plānotais).</li>
-          <li>Izrēķina bāzes %, griestus (80% vai 70% īpašajā &lt;10 g. blokā) un procentuālo izdienas pensiju.</li>
-          <li>Aprēķina aptuveno pensijas apmēru €/mēn. no ievadītās vidējās algas (5 vai 10 gadu periods).</li>
-          <li>Rāda arī gada‑griezuma tabulu (no sākuma gada līdz 2060.), kur redzama atbilstība nosacījumiem katrā gadā.</li>
-	        </ul>
+          <li>Aprēķina agrāko iespējamo pensionēšanās gadu (mēnesi), vecumu un izdienas stāžu izvēlētajā scenārijā.</li>
+          <li>Plānotajā scenārijā <em>visiem</em> no 2027: minimālais vecums +0.5 g./gadā līdz 55; minimālais stāžs +0.5 g./gadā līdz 25.</li>
+          <li>Ja atzīmēts “&lt;10 g.”: no 2027. gada bāzes % samazinājums <strong>pakāpeniski</strong> – −1 p.p./gadā līdz −10 p.p. no 2036. g.; griesti 70%.</li>
+          <li>Aprēķina bāzi, griestus un aptuveno pensiju €/mēn., kā arī gada tabulu ar atbilstību.</li>
+        </ul>
       </div>
+
+      <table class="schedule">
+        <caption>Plānotās izmaiņas (kopsavilkums 2027–2038)</caption>
+        <thead>
+          <tr>
+            <th>Datums</th><th>Vecums</th><th>Minimālais stāžs</th>
+            <th>Izdienas pensijas apmērs % par minimālo izdienu</th>
+            <th>Samazinājums p.p. (&lt;10 g. gadījumā)</th>
+            <th>Stāžs 80% griestiem</th>
+          </tr>
+        </thead>
+        <tbody id="schedBody"></tbody>
+      </table>
     </section>
 
     <section class="card">
       <h2>Rezultāts</h2>
       <table>
         <tbody>
-          <tr><th>Scenārijs</th><td id="outScenario">–</td></tr>
-          <tr><th>Agrākais datums kad var doties pensijā</th><td id="outDate">–</td></tr>
+          <tr><th>Fokusa scenārijs</th><td id="outScenario">–</td></tr>
+          <tr><th>Agrākais datums</th><td id="outDate">–</td></tr>
           <tr><th>Vecums agrākajā datumā</th><td id="outAge">–</td></tr>
           <tr><th>Izdienas stāžs tajā datumā</th><td id="outStaz">–</td></tr>
           <tr><th>Bāzes % (pirms griestiem)</th><td id="outBase">–</td></tr>
           <tr><th>Griesti (%)</th><td id="outCap">–</td></tr>
           <tr><th>Procentuālā izdienas pensija</th><td id="outPct">–</td></tr>
-          <tr><th>Alga bāzes aprēķinam</th><td id="outSalary">–</td></tr>
+          <tr><th>Algas bāze aprēķinam</th><td id="outSalary">–</td></tr>
           <tr><th>Aptuvenais pensijas apmērs €/mēn.</th><td id="outAmount">–</td></tr>
           <tr><th>Zaudētais pensijas apjoms gadā (Esošais 5g. vs Plānotais 10g.)</th><td id="outLossYear">–</td></tr>
         </tbody>
@@ -165,7 +176,7 @@
       </div>
 
       <details style="margin-top:12px">
-        <summary>Gada‑griezuma informācija & diagramma</summary>
+        <summary>Gada-griezuma informācija & diagramma</summary>
         <div class="legend">
           <span><i class="sw" style="background:#d1e7dd"></i> Esošais: atbilst</span>
           <span><i class="sw" style="background:#ffe5d9"></i> Esošais: neatbilst</span>
@@ -173,13 +184,13 @@
           <span><i class="sw" style="background:#ffd6e0"></i> Plānotais: neatbilst</span>
         </div>
         <canvas id="eligChart" width="900" height="260"></canvas>
-        <div style="overflow:auto; max-height:320px; margin-top:8px">
+        <div style="overflow:auto; max-height:360px; margin-top:8px">
           <table id="yearlyTbl">
             <thead>
               <tr>
                 <th>Gads</th><th>Vecums</th><th>Stāžs</th>
                 <th>Min. vecums (Esošais)</th><th>Atbilst (Esošais)</th>
-                <th>Min. vecums (Plānotais)</th><th>Atbilst (Plānotais)</th>
+                <th>Min. vecums (Plānotais)</th><th>Min. stāžs (Plānotais)</th><th>Samazinājums p.p. (&lt;10 g.)</th><th>Atbilst (Plānotais)</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -189,9 +200,9 @@
 
       <footer>
         <p>Aprēķins paredzēts ilustratīvs un balstīts uz spēkā esošajām normām un plānotajām izmaiņām:
-        <br>• Esošais: 20 gadu stāžs un 50 gadu vecums; 55% pie 20 gadiem (+2 p.p. katram gadam virs 20); veselība/štats – 40% bāze; griesti 80%.
-        <br>• Plānotais: min. vecums 50→55 (par 0.5 g./gadā no 2027); min. stāžs 25; +2 p.p. saglabājas; ja &lt;10 g. uz 01.01.2027 – bāze −10 p.p., griesti 70%.
-        <br>• “Pēdējo 2 mēnešu” neiekļaušana ienākumu bāzē šeit netiek atsevišķi modelēta.</p>
+        <br>• Esošais: minimālais vecums 50 un stāžs 20; 55% pie 20 gadiem (+2 p.p. katram gadam virs 20); veselība/štats – 40% bāze; griesti 80%.
+        <br>• Plānotais (attiecas uz visiem no 2027): minimālais vecums pieaug no 50 uz 55 par 0.5 gadā; minimālais stāžs pieaug no 20 uz 25 par 0.5 gadā.
+        <br>• Ja &lt;10 g. uz 01.01.2027.: bāzes % samazinājums pakāpenisks (−1 p.p./gadā no 2027 līdz −10 p.p. no 2036), griesti 70%, ienākumu periods 10 gadi.</p>
       </footer>
     </section>
   </div>
@@ -230,20 +241,34 @@
     return 50 + inc;
   }
 
+  function plannedMinStaz(dateObj){
+    const y = dateObj.getFullYear();
+    if (y < 2027) return 20;
+    const inc = Math.min(5, 0.5 * (y - 2026));
+    return 20 + inc; // up to 25
+  }
+
+  function plannedReductionPp(dateObj){
+    const y = dateObj.getFullYear();
+    if (y < 2027) return 0;
+    return Math.min(10, Math.max(0, y - 2026)); // 2027->1 ... 2036->10, then 10
+  }
+
   function earliestEligibility(dob, stazNow, startDate, cont, scenario){
     const end = new Date(2060, 11, 31);
     let d = new Date(startDate.getTime());
-    d.setDate(1); // normalize
+    d.setDate(1);
     let found = null;
     while(d <= end){
       const age = ageOn(dob, d);
       const staz = cont ? (stazNow + monthsBetween(startDate, d) / 12) : stazNow;
       const eligibleCurrent = (age >= 50) && (staz >= 20);
       const minAgePlan = plannedMinAge(d);
-      const eligiblePlanned = (age >= minAgePlan) && (staz >= 25);
+      const minStazPlan = plannedMinStaz(d);
+      const eligiblePlanned = (age >= minAgePlan) && (staz >= minStazPlan);
       const ok = (scenario === 'Esošais') ? eligibleCurrent : eligiblePlanned;
       if (ok){
-        found = { date: new Date(d.getTime()), age, staz, minAgePlan };
+        found = { date: new Date(d.getTime()), age, staz, minAgePlan, minStazPlan };
         break;
       }
       d.setMonth(d.getMonth() + 1);
@@ -252,10 +277,14 @@
     return found;
   }
 
-  function computePct(staz, health, scenario, loyal){
+  function computePct(staz, health, scenario, loyal, dateObj){
     let base = (health ? 40 : 55) + 2 * (staz - 20);
     let cap = 80;
-    if (scenario === 'Plānotais' && loyal){ base -= 10; cap = 70; }
+    if (scenario === 'Plānotais' && loyal){
+      const red = plannedReductionPp(dateObj || new Date());
+      base -= red;
+      cap = 70;
+    }
     if (base < 0) base = 0;
     const pct = Math.min(base, cap);
     return { base, cap, pct };
@@ -263,7 +292,13 @@
 
   function drawChart(canvas, years, eligCurr, eligPlan){
     const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = 260 * dpr / (rect.height ? rect.height/260 : 1);
+    ctx.scale(dpr, dpr);
+
+    const W = rect.width, H = 260;
     ctx.clearRect(0,0,W,H);
     const left = 40, right = 10, top = 20, bottom = 30;
     const w = W - left - right;
@@ -297,7 +332,6 @@
       const x = left + i*colW + 2;
       ctx.fillText(String(years[i]), x, H - 10);
     }
-
     ctx.fillText('Esošais', 8, top + rowH/2 + 4);
     ctx.fillText('Plānotais', 8, top + rowH + 10 + rowH/2 + 4);
   }
@@ -331,7 +365,7 @@
     } else {
       const ymd = f.date.toISOString().slice(0,10);
       const stazRounded = Math.max(0, f.staz);
-      const { base, cap, pct } = computePct(stazRounded, health, scenarioFocus, loyal);
+      const { base, cap, pct } = computePct(stazRounded, health, scenarioFocus, loyal, f.date);
       const salaryBase = (scenarioFocus === 'Plānotais' && loyal) ? (isNaN(avg10)?0:avg10) : (isNaN(avg5)?0:avg5);
       const amount = pct/100 * salaryBase;
 
@@ -349,7 +383,7 @@
     function fmtSide(x){ return x ? x.toISOString().slice(0,10) : '—'; }
     function fmtPctFor(scn, rec){
       if (!rec) return '—';
-      const { pct } = computePct(Math.max(0, rec.staz), health, scn, loyal);
+      const { pct } = computePct(Math.max(0, rec.staz), health, scn, loyal, rec.date);
       return nf2.format(pct) + ' %';
     }
     document.getElementById('sbDateCurr').textContent = fmtSide(fCurr && fCurr.date);
@@ -373,7 +407,9 @@
 
       const eligibleCurrent = (age >= 50) && (staz >= 20);
       const minAgePlanned = plannedMinAge(vDate);
-      const eligiblePlanned = (age >= minAgePlanned) && (staz >= 25);
+      const minStazPlanned = plannedMinStaz(vDate);
+      const redPlanned = plannedReductionPp(vDate);
+      const eligiblePlanned = (age >= minAgePlanned) && (staz >= minStazPlanned);
 
       years.push(y);
       eligCurr.push(!!eligibleCurrent);
@@ -386,24 +422,20 @@
                      '<td>50</td>' +
                      '<td class="'+(eligibleCurrent?'ok':'no')+'">'+(eligibleCurrent?'Jā':'Nē')+'</td>' +
                      '<td>'+ nf1.format(minAgePlanned) +'</td>' +
+                     '<td>'+ nf1.format(minStazPlanned) +'</td>' +
+                     '<td>'+ redPlanned +'</td>' +
                      '<td class="'+(eligiblePlanned?'ok':'no')+'">'+(eligiblePlanned?'Jā':'Nē')+'</td>';
       tbody.appendChild(tr);
     }
 
     // chart
     const canvas = document.getElementById('eligChart');
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = rect.width * dpr;
-    canvas.height = 260 * dpr / (rect.height ? rect.height/260 : 1);
-    const ctx = canvas.getContext('2d');
-    ctx.scale(dpr, dpr);
     drawChart(canvas, years, eligCurr, eligPlan);
 
     // Yearly loss: (Esošais 5g. bāze) vs (Plānotais 10g. bāze)
     function monthlyAmountFor(rec, scn){
       if(!rec) return null;
-      const { pct } = computePct(Math.max(0, rec.staz), health, scn, loyal);
+      const { pct } = computePct(Math.max(0, rec.staz), health, scn, loyal, rec.date);
       const salary = (scn === 'Plānotais' && loyal) ? (isNaN(avg10)?0:avg10) : (isNaN(avg5)?0:avg5);
       if (!salary) return null;
       return pct/100 * salary;
@@ -416,6 +448,26 @@
       const loss = (mCurr - mPlan) * 12;
       const sign = loss >= 0 ? '' : '-';
       document.getElementById('outLossYear').textContent = (sign + nf0.format(Math.abs(loss)) + ' € / gadā');
+    }
+  }
+
+  function buildSchedule(){
+    const body = document.getElementById('schedBody');
+    body.innerHTML = '';
+    for(let y=2027; y<=2038; y++){
+      const d = new Date(y,0,1);
+      const minAge = plannedMinAge(d);
+      const minStaz = plannedMinStaz(d);
+      const red = plannedReductionPp(d);
+      const stazFor80 = minStaz + (80 - 55)/2; // +12.5 gadi
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>'+ d.toISOString().slice(0,10) +'</td>' +
+                     '<td>'+ minAge.toFixed(1).replace(".",",") +'</td>' +
+                     '<td>'+ minStaz.toFixed(1).replace(".",",") +'</td>' +
+                     '<td>55</td>' +
+                     '<td>'+ red +'</td>' +
+                     '<td>'+ stazFor80.toFixed(1).replace(".",",") +'</td>';
+      body.appendChild(tr);
     }
   }
 
@@ -440,6 +492,8 @@
     const canvas = document.getElementById('eligChart');
     const ctx = canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width, canvas.height);
   });
+
+  buildSchedule(); // 2027–2038 kopsavilkums
 })();
 </script>
 </body>
