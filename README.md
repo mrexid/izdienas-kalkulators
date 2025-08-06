@@ -1,3 +1,6 @@
+"Spēlējamies" šeit
+https://mrexid.github.io/izdienas-kalkulators/izd_pens_apr_iem_ievp_vk_jauns.html
+
 “Aprēķina sākuma datums (precīzam stāžam)” ir atslēga tam, lai stāžs “augtu” nevis tikai pa gadiem, bet pa mēnešiem.
 Ko tas nozīmē kalkulatorā
 
